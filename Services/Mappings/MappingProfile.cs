@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Models;
+using Services.DTOs.Country;
 using Services.DTOs.Employee;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,13 @@ namespace Services.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<Employee,EmployeeDto>().ReverseMap();
-            CreateMap<EmployeeCreateDto,Employee>().ReverseMap();
+            CreateMap<Employee, EmployeeDto>().ReverseMap();
+            CreateMap<EmployeeCreateDto, Employee>();
+            CreateMap<EmployeeUpdateDto, Employee>().ReverseMap();
+
+            CreateMap<Country, CountryDto>().ReverseMap();
+            CreateMap<CountryCreateDto, Country>();
+            CreateMap<CountryUpdateDto, Country>().ReverseMap();
         }
     }
 }

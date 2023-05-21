@@ -29,7 +29,7 @@ namespace Services.Services
 
         public async Task<CountryDto> GetByIdAsync(int? id) => _mapper.Map<CountryDto>(await _countryRepo.GetByIdAsync(id));
 
-        public async Task DeleteAsync(int? id) => await _countryRepo.DeleteAsync(await _countryRepo.GetByIdAsync(id));
+        public async Task DeleteAsync(int? id) => await _countryRepo.Delete(await _countryRepo.GetByIdAsync(id));
 
         public async Task UpdateAsync(int id, CountryUpdateDto country)
         {

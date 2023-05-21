@@ -27,7 +27,7 @@ namespace Services.Services
 
         public async Task<IEnumerable<EmployeeDto>> GetAllAsync()
         {
-           var data = await _employeeRepository.GetAllAsync();
+           var data = await _employeeRepository.FindAllAsync();
 
            var mappedData = _mapper.Map<IEnumerable<EmployeeDto>>(data);
 
@@ -38,18 +38,13 @@ namespace Services.Services
 
         public async Task<EmployeeDto> GetByIdAsync(int? id) => _mapper.Map<EmployeeDto>(await _employeeRepository.GetByIdAsync(id));
 
-        public async Task DeleteAsync(int? id)=> await _employeeRepository.DeleteAsync(await _employeeRepository.GetByIdAsync(id));
-
-        public Task Search(string name, EmployeeSearchDto employee)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task DeleteAsync(int? id)=> await _employeeRepository.Delete(await _employeeRepository.GetByIdAsync(id));
 
 
         public async Task UpdateAsync(int id, EmployeeUpdateDto employee)
         {
 
-            var dbEmployee = await _employeeRepository.GetByIdAsync(id);
+            var dbEmployee = await _employeeRepository.GetByIdAsync(id); // employeni id sini gorek tapri
 
             _mapper.Map(employee, dbEmployee);
 
@@ -57,5 +52,20 @@ namespace Services.Services
 
         }
 
+        public async Task<IEnumerable<EmployeeDto>> SearchAsync(string searchText)
+
+        {
+            if (string.IsNullOrEmpty(searchText))
+            return _mapper.Map<IEnumerable<EmployeeDto>>(await _employeeRepository.FindAllAsync());
+            return _mapper.Map<IEnumerable<EmployeeDto>>(await _employeeRepository.FindAllAsync(m => m.FullName.Contains(searchText)));
+
+            //return await _employeeRepository.FindAllAsync(m=>m.FullName.Contains(searchText))
+
+        }
+
+        public async Task SoftDeleteAsync(int? id)
+        {
+            await _employeeRepository.SoftDeleteAsync(id);
+        }
     }
 }
